@@ -34,7 +34,7 @@ class UserInfo extends React.Component { // eslint-disable-line react/prefer-sta
                 hintText={education[key]}
               />
             </ListItem>) :
-            <ListItem leftAvatar={<Avatar src="http://lorempixel.com/output/people-q-c-128-128-1.jpg" size={35} />} key={key} disabled primaryText={education[key]} secondaryText={key} />
+            <ListItem leftAvatar={<Avatar src="https://cdn.rawgit.com/MedElfadhelELHACHEMI/CDN/3f809b78/color_logo_transparent_background_small.png" size={35} />} key={key} disabled primaryText={education[key]} secondaryText={key} />
           );
         }
         return item;
@@ -54,7 +54,7 @@ class UserInfo extends React.Component { // eslint-disable-line react/prefer-sta
                   hintText={experience[key]}
                 />
               </ListItem>) :
-              <ListItem leftAvatar={<Avatar src="http://lorempixel.com/output/people-q-c-128-128-1.jpg" size={35} />} key={key} disabled primaryText={experience[key]} secondaryText={key} />
+              <ListItem leftAvatar={<Avatar src="https://cdn.rawgit.com/MedElfadhelELHACHEMI/CDN/3f809b78/color_logo_transparent_background_small.png" size={35} />} key={key} disabled primaryText={experience[key]} secondaryText={key} />
           );
         }
         return item;
