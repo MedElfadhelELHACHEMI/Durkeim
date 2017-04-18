@@ -12,18 +12,30 @@
  */
 
 import React from 'react';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import ApplicationBar from '../../components/ApplicationBar';
+import makeSelectApp from './selectors';
 
-export default class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
-  static propTypes = {
-    children: React.PropTypes.node,
-  };
-
+class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
-        {React.Children.toArray(this.props.children)}
+        <ApplicationBar User={this.props.App.user} />
+        {React.Children.toArray(this.props.children) }
       </div>
     );
   }
+
 }
+App.propTypes = {
+  children: React.PropTypes.node,
+  App: React.PropTypes.object,
+};
+const mapStateToProps = createStructuredSelector({
+  App: makeSelectApp(),
+});
+
+export default connect(mapStateToProps)(App);
+

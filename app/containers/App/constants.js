@@ -10,3 +10,6 @@
  */
 
 export const DEFAULT_LOCALE = 'en';
+export const APP_INIT = 'APP/APP_INIT';
+export const USER_AUTHED = 'APP/USER_LOGGED_IN';
+export const USER_LOGGEDOUT = 'APP/USER_LOGGED_OUT';

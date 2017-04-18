@@ -22,12 +22,136 @@ export default function createRoutes(store) {
       name: 'home',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
+          import('containers/HomePage/reducer'),
+          import('containers/HomePage/sagas'),
           import('containers/HomePage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([component]) => {
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('homepage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/',
+      name: 'createSignal',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/CreateSignal/reducer'),
+          import('containers/CreateSignal/sagas'),
+          import('containers/CreateSignal'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('createSignal', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/user',
+      name: 'user',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/User/reducer'),
+          import('containers/User/sagas'),
+          import('containers/User'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('user', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/Auth/Login',
+      name: 'loginForm',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/LoginForm/reducer'),
+          import('containers/LoginForm/sagas'),
+          import('containers/LoginForm'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('loginForm', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/Auth/Signup',
+      name: 'signupForm',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/SignupForm/reducer'),
+          import('containers/SignupForm/sagas'),
+          import('containers/SignupForm'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('signupForm', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/u/profile',
+      name: 'profile',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Profile/reducer'),
+          import('containers/Profile/sagas'),
+          import('containers/Profile'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('profile', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/Signals',
+      name: 'signal',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Signal/reducer'),
+          import('containers/Signal/sagas'),
+          import('containers/Signal'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('signal', reducer.default);
+          injectSagas(sagas.default);
           renderRoute(component);
         });
 

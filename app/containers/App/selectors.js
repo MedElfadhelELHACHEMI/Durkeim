@@ -1,4 +1,6 @@
 // makeSelectLocationState expects a plain JS object for the routing state
+import { createSelector } from 'reselect';
+
 const makeSelectLocationState = () => {
   let prevRoutingState;
   let prevRoutingStateJS;
@@ -18,3 +20,18 @@ const makeSelectLocationState = () => {
 export {
   makeSelectLocationState,
 };
+
+const selectAppDomain = () => (state) => state.get('App');
+const makeSelectApp = () => createSelector(
+  selectAppDomain(),
+  (substate) => substate.toJS()
+);
+
+export default makeSelectApp;
+export {
+  selectAppDomain,
+};
+
+/**
+ * Direct selector to the user state domain
+ */
