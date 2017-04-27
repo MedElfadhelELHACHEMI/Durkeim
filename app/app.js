@@ -18,6 +18,7 @@ import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import setAuthToken, { getToken, isAuthenticated } from 'utils/setAuthToken';
 
 
 // Import root app
@@ -68,7 +69,10 @@ const rootRoute = {
   component: App,
   childRoutes: createRoutes(store),
 };
-
+if (isAuthenticated()) {
+  setAuthToken(getToken());
+  console.info('authed');
+}
 
 const render = (messages) => {
   ReactDOM.render(

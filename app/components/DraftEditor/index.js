@@ -47,13 +47,23 @@ import messages from './messages';
 
 class DraftEditor extends Component { // eslint-disable-line react/prefer-stateless-function
   state = {
-    editorState: createEditorStateWithText(text),
+    editorState: createEditorStateWithText(this.props.signalText),
   };
+
 
   onChange = (editorState) => {
     this.setState({
       editorState,
     });
+    const currentContentState = this.state.editorState.getCurrentContent();
+    const newContentState = editorState.getCurrentContent();
+
+    if (currentContentState !== newContentState) {
+      // There was a change in the content
+      this.props.onSignalTextChange(editorState);
+    } else {
+      // The change was triggered by a change in focus/selection
+    }
   };
   focus = () => {
     this.editor.focus();
@@ -68,6 +78,7 @@ class DraftEditor extends Component { // eslint-disable-line react/prefer-statel
           ref={(element) => { this.editor = element; }}
           onFocus={this.props.onSignalCreationfocus}
           onBlur={this.props.onSignalCreationblur}
+          placeholder="Write Down Your Signal"
         />
         <EmojiSuggestions />
       </div>
@@ -78,6 +89,8 @@ class DraftEditor extends Component { // eslint-disable-line react/prefer-statel
 DraftEditor.propTypes = {
   onSignalCreationfocus: React.PropTypes.func,
   onSignalCreationblur: React.PropTypes.func,
+  onSignalTextChange: React.PropTypes.func,
+  signalText: React.PropTypes.string,
 };
 
 export default DraftEditor;

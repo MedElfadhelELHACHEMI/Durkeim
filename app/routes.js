@@ -158,6 +158,46 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/u/company',
+      name: 'companyProfile',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/CompanyProfile/reducer'),
+          import('containers/CompanyProfile/sagas'),
+          import('containers/CompanyProfile'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('companyProfile', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/u/profile/edit',
+      name: 'profileForm',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/ProfileForm/reducer'),
+          import('containers/ProfileForm/sagas'),
+          import('containers/ProfileForm'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('profileForm', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

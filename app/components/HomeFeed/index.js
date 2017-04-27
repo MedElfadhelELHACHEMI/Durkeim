@@ -27,7 +27,7 @@ class HomeFeed extends React.Component { // eslint-disable-line react/prefer-sta
         <Row>
           <Column sm={8} lg={8} >
             <CreateSignalWrapper>
-              <CreateSignal dispatch={this.props.dispatch} SignalActions={this.props.SignalActions} Signal={this.props.Signal} />
+              <CreateSignal SignalActions={this.props.SignalActions} Signal={this.props.Signal} />
             </CreateSignalWrapper>
           </Column>
           <Column sm={4} lg={4} >

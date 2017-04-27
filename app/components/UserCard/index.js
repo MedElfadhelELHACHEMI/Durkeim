@@ -22,7 +22,6 @@ class UserCard extends React.Component { // eslint-disable-line react/prefer-sta
       let item = <p>nothing added</p>;
       if (link) {
         for (const key in link) {
-          console.log(key);
           item = ((this.props.isEditing ?
             (<TextField
               id={key}
@@ -43,13 +42,15 @@ class UserCard extends React.Component { // eslint-disable-line react/prefer-sta
               (<ListItem disabled >
                 <TextField
                   id="first"
+                  name="first_name"
                   value={this.props.userInfo.first_name}
-                  onChange={this.props.UserCardActions.onEditFirst}
+                  onChange={this.props.onEditUserInfo}
                 />
                 <TextField
                   id="last"
+                  name="last_name"
                   value={this.props.userInfo.last_name}
-                  onChange={this.props.UserCardActions.onEditLast}
+                  onChange={this.props.onEditUserInfo}
                 />
               </ListItem>) :
               (<ListItem
@@ -91,7 +92,7 @@ UserCard.propTypes = {
   userInfo: React.PropTypes.object,
   onEdit: React.PropTypes.func,
   isEditing: React.PropTypes.bool,
-  UserCardActions: React.PropTypes.object,
+  onEditUserInfo: React.PropTypes.func,
 };
 
 export default UserCard;

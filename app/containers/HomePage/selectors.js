@@ -10,11 +10,15 @@ const makeSelectSignal = () => createSelector(
 );
 const makeSelectTags = () => createSelector(
   selectHomeDomain(),
-  (homeState) => homeState.get('tags')
+  (homeState) => homeState.get('generalTags')
 );
-
+const makeSelectSignalObject = () => createSelector(
+  selectHomeDomain(),
+  (substate) => substate.get('Signal')
+);
 export default selectHomeDomain;
 export {
   makeSelectSignal,
   makeSelectTags,
+  makeSelectSignalObject,
 };

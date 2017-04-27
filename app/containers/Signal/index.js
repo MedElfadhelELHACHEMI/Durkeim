@@ -21,8 +21,10 @@ import Menu from 'material-ui/Menu';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import CircularProgress from 'material-ui/CircularProgress';
 import makeSelectSignal from './selectors';
 import messages from './messages';
+import { getPendingSignals } from './actions';
 
 const iconButtonElement = (
   <IconButton
@@ -41,7 +43,12 @@ const rightIconMenu = (
   </IconMenu>
 );
 export class Signal extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  componentWillMount() {
+    this.props.onInit();
+  }
   render() {
+    const { err, isLoading, Signals } = this.props.Signal;
+    console.log('index', Signals);
     return (
       <div>
         <Helmet
@@ -50,6 +57,13 @@ export class Signal extends React.Component { // eslint-disable-line react/prefe
             { name: 'description', content: 'Description of Signal' },
           ]}
         />
+        {isLoading && <Row divisions={11}>
+          <Column sm={1} smShift={5} lg={1} lgShift={5} fluid>
+            <h5 style={{ color: '#297299' }}>Loading Signals</h5>
+            <CircularProgress size={80} thickness={5} style={{ margin: 0 }} />
+          </Column>
+        </Row> }
+        {!isLoading &&
         <Page style={{ marginTop: 50 }}>
           <Row>
             <Column sm={9} lg={9} fluid >
@@ -58,53 +72,30 @@ export class Signal extends React.Component { // eslint-disable-line react/prefe
                   <Paper zDepth={1} rounded={false} >
                     <List>
                       <Subheader>Active Interactions</Subheader>
-                      <ListItem disabled style={{ margin: 0, padding: 0 }} >
+                      {Signals.map((currentSignal)=>
+                        (
+                          <ListItem key={currentSignal.id} disabled style={{ margin: 0, padding: 0 }} >
+                            <MenuItem style={{ margin: 0, padding: 0 }} >
+                              <ListItem
+                                disabled
+                                leftAvatar={<Avatar src="http://lorempixel.com/output/animals-q-c-128-128-4.jpg" />}
+                                rightIconButton={rightIconMenu}
+                                primaryText={currentSignal.userId}
+                                secondaryText={
+                                  <p>
+                                    <span style={{ color: darkBlack }}>{currentSignal.title}</span><br />
+                                    {currentSignal.body}
+                                  </p>
+                                }
+                                secondaryTextLines={2}
+                              />
+                            </MenuItem>
+                            <MenuItem disabled>
+                              <p>edit</p>
+                            </MenuItem>
+                          </ListItem>
+                        ))}
 
-                        <MenuItem style={{ margin: 0, padding: 0 }} >
-                          <ListItem
-                            disabled
-                            leftAvatar={<Avatar src="http://lorempixel.com/output/animals-q-c-128-128-4.jpg" />}
-                            rightIconButton={rightIconMenu}
-                            primaryText="Brendan Lim"
-                            secondaryText={
-                              <p>
-                                <span style={{ color: darkBlack }}>Signal Title</span><br />
-                                  I&apos;ll be in your neighborhood doing errands this weekend. Do you want to grab brunch?
-                                </p>
-                              }
-                            secondaryTextLines={2}
-                          />
-                        </MenuItem>
-                        <MenuItem disabled>
-                          <p>edit</p>
-                        </MenuItem>
-
-
-                      </ListItem>
-                      <Divider inset />
-                      <ListItem disabled style={{ margin: 0, padding: 0 }} >
-
-                        <MenuItem style={{ margin: 0, padding: 0 }} >
-                          <ListItem
-                            disabled
-                            leftAvatar={<Avatar src="http://lorempixel.com/output/animals-q-c-128-128-4.jpg" />}
-                            rightIconButton={rightIconMenu}
-                            primaryText="Brendan Lim"
-                            secondaryText={
-                              <p>
-                                <span style={{ color: darkBlack }}>Signal Title</span><br />
-                                I&apos;ll be in your neighborhood doing errands this weekend. Do you want to grab brunch?
-                              </p>
-                            }
-                            secondaryTextLines={2}
-                          />
-                        </MenuItem>
-                        <MenuItem disabled>
-                          <p>edit</p>
-                        </MenuItem>
-
-
-                      </ListItem>
                     </List>
                   </Paper>
                 </Column>
@@ -135,13 +126,15 @@ export class Signal extends React.Component { // eslint-disable-line react/prefe
           </Row>
 
         </Page>
+        }
       </div>
     );
   }
 }
 
 Signal.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  onInit: PropTypes.func.isRequired,
+  Signal: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -150,7 +143,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    onInit: () => (dispatch(getPendingSignals())),
   };
 }
 

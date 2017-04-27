@@ -14,6 +14,9 @@ export default function setAuthToken(token) {
 export function isAuthenticated() {
   return !!localStorage.token;
 }
+export function getToken() {
+  return localStorage.token;
+}
 export function saveUser(user) {
   if (user) {
     localStorage.setItem('user', JSON.stringify(user));

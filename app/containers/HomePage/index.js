@@ -42,13 +42,20 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
     onSignalCreationfocus: React.PropTypes.func,
     onSignalCreationblur: React.PropTypes.func,
     onSignalTextChange: React.PropTypes.func,
+    onSignalTitleChange: React.PropTypes.func,
     onSignalSending: React.PropTypes.func,
+    onAddTag: React.PropTypes.func,
+    onSettingTags: React.PropTypes.func,
+    onGetTags: React.PropTypes.func,
     Signal: React.PropTypes.object,
   };
+  componentWillMount() {
+    this.props.onGetTags();
+  }
   render() {
     // console.log('auth', isAuthenticated());
     const { isLoggedIn } = this.props.App.user;
-    const { onSignalTextChange, onSignalCreationfocus, onSignalCreationblur, onSignalSending } = this.props;
+    const { onSignalTextChange, onSignalTitleChange, onSignalCreationfocus, onSignalCreationblur, onSignalSending, onAddTag, onSettingTags } = this.props;
     return (
       <div>
         <Helmet
@@ -59,7 +66,7 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
         />
         {isAuthenticated() ?
           <HomeFeed
-            SignalActions={{ onSignalTextChange, onSignalCreationfocus, onSignalCreationblur, onSignalSending }}
+            SignalActions={{ onSignalTextChange, onSignalTitleChange, onSignalCreationfocus, onSignalCreationblur, onSignalSending, onAddTag, onSettingTags }}
             Signal={this.props.Signal}
           /> :
             <Page>
@@ -84,8 +91,11 @@ function mapDispatchToProps(dispatch) {
     onSignalCreationfocus: () => dispatch(SignalActions.creatingSignalFocus()),
     onSignalCreationblur: () => dispatch(SignalActions.creatingSignalBlur()),
     onSignalSending: () => dispatch(SignalActions.sendingSignal()),
-    onSignalTextChange: (evt) => dispatch(SignalActions.changeSignalText(evt.target.value)),
-
+    onSignalTextChange: (editorState) => dispatch(SignalActions.changeSignalText(editorState.getCurrentContent().getPlainText())),
+    onSignalTitleChange: (evt) => dispatch(SignalActions.changeSignalTitle(evt.target.value)),
+    onAddTag: (tag) => dispatch(SignalActions.addTag(tag)),
+    onSettingTags: () => dispatch(SignalActions.settingTags()),
+    onGetTags: () => dispatch(SignalActions.getAllTags()),
   };
 }
 const mapStateToProps = createStructuredSelector({

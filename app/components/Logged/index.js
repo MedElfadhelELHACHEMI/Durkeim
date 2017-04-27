@@ -23,22 +23,19 @@ const style = { marginRight: 100, cursor: 'pointer' };
 function Logged(props) {
   return (
     <div>
-      <Link to="/Signals" activeStyle={{ color: 'white' }} style={{ textDecoration: 'none', color: '#297299',marginRight: 50 }}>Interactions</Link>
+      <Link to="/Signals" activeStyle={{ color: 'white' }} style={{ textDecoration: 'none', color: '#297299', marginRight: 50 }}>Interactions</Link>
       <IconMenu
         animated
-        {...props}
         iconButtonElement={
-          <Badge
-            badgeContent={6}
-            secondary
-            badgeStyle={{ top: 25, left: 5, color: 'white', backgroundColor: red500 }}
-            style={{ padding: 0, marginTop: 0 }}
-          >
-            <IconButton tooltip="Notifications" iconStyle={{ color: '#297299', paddingTop: 0 }}>
-              <NotificationsIcon />
-            </IconButton>
-          </Badge>
-
+          <IconButton style={{ padding: 0, marginTop: 0 }}>
+            <Badge
+              badgeContent={6}
+              secondary
+              badgeStyle={{ top: 34, left: 5, color: 'white', backgroundColor: red500 }}
+            >
+              <NotificationsIcon style={{ color: '#297299', paddingTop: 0 }} />
+            </Badge>
+          </IconButton>
         }
         targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -49,16 +46,14 @@ function Logged(props) {
       </IconMenu>
 
       <IconMenu
-        {...props}
+
         iconButtonElement={
-
-          <Avatar
-            style={style}
-            src={props.userInfo.profile_img}
-            size={35}
-          />
-
-
+          <IconButton style={style}>
+            <Avatar
+              src={props.userInfo.profile_img}
+              size={35}
+            />
+          </IconButton>
         }
         targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}

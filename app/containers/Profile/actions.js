@@ -7,12 +7,13 @@
 import {
   DEFAULT_ACTION,
   INIT_PROFILE,
+  LOADING_PROFILE,
+  LOADING_PROFILE_SUCCESS,
   EDIT_PROFILE,
   SAVE_PROFILE,
-  EDIT_PROFILE_FIRST,
-  EDIT_PROFILE_LAST,
-  EDIT_PROFILE_OCCUPATION,
-  EDIT_PROFILE_COMPANY,
+  EDIT_PROFILE_USER_INFO,
+  EDIT_PROFILE_INTERESTS,
+  EDIT_PROFILE_GENERAL_INFO,
 } from './constants';
 
 export function defaultAction() {
@@ -20,9 +21,19 @@ export function defaultAction() {
     type: DEFAULT_ACTION,
   };
 }
-export function initProfile(user) {
+export function initProfile() {
   return {
     type: INIT_PROFILE,
+  };
+}
+export function loadProfile() {
+  return {
+    type: LOADING_PROFILE,
+  };
+}
+export function loadProfileSuccess(user) {
+  return {
+    type: LOADING_PROFILE_SUCCESS,
     user,
   };
 }
@@ -36,17 +47,22 @@ export function saveProfile() {
     type: SAVE_PROFILE,
   };
 }
-
-
-export function editProfileFirst(first) {
+export function editProfileUserInfo(name, value) {
   return {
-    type: EDIT_PROFILE_FIRST,
-    first,
+    type: EDIT_PROFILE_USER_INFO,
+    name,
+    value,
   };
 }
-export function editProfileLast(last) {
+export function editProfileInterests(interests) {
   return {
-    type: EDIT_PROFILE_LAST,
-    last,
+    type: EDIT_PROFILE_INTERESTS,
+    interests,
+  };
+}
+export function editProfileGeneralInfo(generalInfo) {
+  return {
+    type: EDIT_PROFILE_GENERAL_INFO,
+    generalInfo,
   };
 }

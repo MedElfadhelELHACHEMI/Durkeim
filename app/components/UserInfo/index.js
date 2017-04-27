@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import _ from 'lodash';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import { Column } from 'hedron';
 import Paper from 'material-ui/Paper';
 import Subheader from 'material-ui/Subheader';
@@ -13,7 +13,15 @@ import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import Avatar from 'material-ui/Avatar';
-
+import UserGeneralInfo from '../UserGeneralInfo';
+const styles = {
+  headline: {
+    fontSize: 24,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
+  },
+};
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
@@ -25,16 +33,16 @@ class UserInfo extends React.Component { // eslint-disable-line react/prefer-sta
       if (education) {
         for (const key in education) {
           item = (this.props.isEditing ?
-            (<ListItem disabled key={key} >
-              <TextField
-                hintText={key}
-                value={key}
-              />
-              <TextField
-                hintText={education[key]}
-              />
-            </ListItem>) :
-            <ListItem leftAvatar={<Avatar src="https://cdn.rawgit.com/MedElfadhelELHACHEMI/CDN/3f809b78/color_logo_transparent_background_small.png" size={35} />} key={key} disabled primaryText={education[key]} secondaryText={key} />
+              (<ListItem disabled key={key} >
+                <TextField
+                  hintText={key}
+                  value={key}
+                />
+                <TextField
+                  hintText={education[key]}
+                />
+              </ListItem>) :
+              <ListItem leftAvatar={<Avatar src="https://cdn.rawgit.com/MedElfadhelELHACHEMI/CDN/3f809b78/color_logo_transparent_background_small.png" size={35} />} key={key} disabled primaryText={education[key]} secondaryText={key} />
           );
         }
         return item;
@@ -75,6 +83,7 @@ class UserInfo extends React.Component { // eslint-disable-line react/prefer-sta
           </List>
         </Paper>
       </Column>
+
     );
   }
 }

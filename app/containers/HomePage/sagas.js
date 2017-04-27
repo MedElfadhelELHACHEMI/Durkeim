@@ -6,36 +6,50 @@ import { SignalActions } from './actions';
 import {
   SENDING_SIGNAL,
   SIGNAL_TEXT_CHANGE,
-  CREATING_SIGNAL_BLUR,
+  GET_ALL_TAGS,
 } from './constants';
-import selectHomeDomain, { makeSelectSignal, makeSelectTags } from './selectors';
+import selectHomeDomain, { makeSelectSignal, makeSelectTags, makeSelectSignalObject } from './selectors';
 // Workers
 function* SendSignalAsync() {
-  const signalText = yield select(makeSelectSignal());
+  const Signal = yield select(makeSelectSignalObject());
+  const { tags, text, title } = Signal.toJS();
+  const body = text;
+  const outSignal = { tags, body, title };
+  console.log(outSignal);
   try {
     console.log('attempting to Send Signal');
     yield put(SignalActions.sendingSignalPending());
-    const response = yield call(axios.post, 'https://jsonplaceholder.typicode.com/posts', { signaltext: signalText });
+    const response = yield call(axios.post, 'https://fathomless-badlands-82393.herokuapp.com/api/signals', outSignal);
     yield put(SignalActions.sendingSignalSuccessful(response.data));
   } catch (e) {
     console.log('request failed OOOOOOOOOOO', e);
     yield put(SignalActions.sendingSignalFailed(e));
   }
 }
-function* addTag(action) {
+function* addTags(action) {
   const tags = yield select(makeSelectTags());
   const Input = action.text.toLowerCase().split(/\s+/);
   const currentTags = [];
   tags.map((tag) => {
-    const current = tag.toLowerCase();
+    const current = tag.get('value').toLowerCase();
     if (Input.indexOf(current) !== -1 && currentTags.indexOf(current) === -1) {
       currentTags.push(tag);
     }
   });
-  yield put(SignalActions.addTags(currentTags));
+  if (currentTags.length > 0) {
+    yield put(SignalActions.addTags(currentTags));
+  }
 }
-
-
+function* getAllTagsAsync() {
+  try {
+    const response = yield call(axios.get, 'https://fathomless-badlands-82393.herokuapp.com/api/tags');
+    console.log(response);
+    yield put(SignalActions.getAllTagsSuccess(response.data));
+  } catch (e) {
+    console.log('failed fetch request', e);
+    yield put(SignalActions.getAllTagsFailed(e));
+  }
+}
 // Watchers
 // Individual exports for testing
 function* watchSignal() {
@@ -47,7 +61,13 @@ function* watchSignal() {
 }
 function* watchTags() {
   console.log('watching tags');
-  const watcher = yield takeEvery(SIGNAL_TEXT_CHANGE, addTag);
+  const watcher = yield takeLatest(SIGNAL_TEXT_CHANGE, addTags);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+function* watchTagsInit() {
+  console.log('watching init');
+  const watcher = yield takeLatest(GET_ALL_TAGS, getAllTagsAsync);
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
@@ -56,4 +76,5 @@ function* watchTags() {
 export default [
   watchSignal,
   watchTags,
+  watchTagsInit,
 ];

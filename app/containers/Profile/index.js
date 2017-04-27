@@ -15,11 +15,11 @@ import ContentSave from 'material-ui/svg-icons/content/save';
 import InterestsSection from 'components/InterestsSection';
 import UserInfo from 'components/UserInfo';
 import UserCard from 'components/UserCard';
-import makeSelectApp from 'containers/App/selectors';
+import CircularProgress from 'material-ui/CircularProgress';
 
 
 import makeSelectProfile from './selectors';
-import { editProfile, saveProfile, editProfileFirst, editProfileLast, initProfile } from './actions';
+import { editProfile, saveProfile, editProfileUserInfo, editProfileInterests, editProfileGeneralInfo, initProfile } from './actions';
 import messages from './messages';
 
 const style = {
@@ -29,14 +29,11 @@ const style = {
 
 export class Profile extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    console.log('appuser', this.props.App.user);
-    this.props.onInit(this.props.App.user);
+    this.props.onInit();
   }
   render() {
-    console.log('profileuser', this.props.Profile);
-    const { isEditing, general_info, user_info, interests } = this.props.Profile;
-    const { onEdit, onSave, onEditFirst, onEditLast } = this.props;
-    const UserCardActions = { onEditFirst, onEditLast };
+    const { isEditing, isLoading, general_info, user_info, interests } = this.props.Profile;
+    const { onEdit, onSave } = this.props;
     return (
       <Page style={{ marginTop: '5%' }}>
         <Helmet
@@ -45,6 +42,13 @@ export class Profile extends React.PureComponent { // eslint-disable-line react/
             { name: 'description', content: 'Description of Profile' },
           ]}
         />
+        {isLoading && <Row divisions={11}>
+          <Column sm={1} smShift={5} lg={1} lgShift={5} fluid>
+            <h5 style={{ color: '#297299' }}>Laoding Profile</h5>
+            <CircularProgress size={80} thickness={5} style={{ margin: 0 }} />
+          </Column>
+        </Row> }
+        {!isLoading &&
         <Row alignItems="flex-start">
           <Column sm={2} lg={3} fluid>
             <Avatar
@@ -53,8 +57,9 @@ export class Profile extends React.PureComponent { // eslint-disable-line react/
               style={style}
             />
           </Column>
-          <UserCard userInfo={user_info} onEdit={onEdit} isEditing={isEditing} UserCardActions={UserCardActions} />
-        </Row>
+          <UserCard userInfo={user_info} onEdit={onEdit} isEditing={isEditing} onEditUserInfo={this.props.onEditUserInfo} />
+        </Row>}
+        {!isLoading &&
         <Row justifyContent="center">
           <InterestsSection interests={interests} />
           <UserInfo Info={general_info} isEditing={isEditing} />
@@ -67,7 +72,8 @@ export class Profile extends React.PureComponent { // eslint-disable-line react/
               onTouchTap={onSave}
             /> :
               <div />}
-        </Row>
+        </Row>}
+
 
       </Page>
     );
@@ -76,17 +82,16 @@ export class Profile extends React.PureComponent { // eslint-disable-line react/
 
 Profile.propTypes = {
   Profile: PropTypes.object.isRequired,
-  App: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  onEditFirst: PropTypes.func.isRequired,
-  onEditLast: PropTypes.func.isRequired,
   onInit: PropTypes.func.isRequired,
+  onEditUserInfo: PropTypes.func.isRequired,
+  onEditInterests: PropTypes.func.isRequired,
+  onEditGeneralInfo: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   Profile: makeSelectProfile(),
-  App: makeSelectApp(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -94,8 +99,9 @@ function mapDispatchToProps(dispatch) {
     onInit: (user) => { dispatch(initProfile(user)); },
     onEdit: () => { dispatch(editProfile()); },
     onSave: () => { dispatch(saveProfile()); },
-    onEditFirst: (evt) => { dispatch(editProfileFirst(evt.target.value)); },
-    onEditLast: (evt) => { dispatch(editProfileLast(evt.target.value)); },
+    onEditUserInfo: (evt) => { dispatch(editProfileUserInfo(evt.target.name, evt.target.value)); },
+    onEditInterests: (interests) => { dispatch(editProfileInterests(interests)); },
+    onEditGeneralInfo: (generalInfo) => { dispatch(editProfileGeneralInfo(generalInfo)); },
   };
 }
 
