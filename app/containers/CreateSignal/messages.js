@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.containers.CreateSignal.header',
-    defaultMessage: 'This is CreateSignal container !',
+    defaultMessage: 'This is the CreateSignal container !',
   },
 });
