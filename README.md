@@ -5,7 +5,7 @@
 L'objectif de ce projet était de permettre aux entrepreneurs, aux ingénieurs et à toute personne nécessaire à une start-up de se chercher et de se retrouver en utilisant des messages courts (Signaux), des Tags et des domaines d'expertise.
 le code que je vais vous montrer est le composant pour créer de tels Messages (Signaux)
 ## Visuel
-![alt text](durkeim/Durkeim signal creator.gif "Animation")
+![alt text](https://github.com/MedElfadhelELHACHEMI/durkeim/blob/master/Durkeim%20signal%20creator.gif  "Animation")
 
 ## Code
 Techno utiliser: ReactJs,Redux,ImmutableJs,MaterialUI
